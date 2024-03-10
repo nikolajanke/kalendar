@@ -1,0 +1,51 @@
+---
+import { Badge } from "@/components/ui/badge";
+import { formatDate } from "@/lib/utils";
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+import MainLayout from "./main.astro";
+
+type Props = CollectionEntry<'blog'>['data'];
+
+const { title, description, pubDate, updatedDate, heroImage, category  } = Astro.props;
+---
+
+<MainLayout title={title} description={description}>
+<article class="container px-4 prose dark:prose-invert max-w-2xl">
+  <Image
+    class="rounded-xl overflow-hidden my-6 select-none w-full"
+    width={1020}
+    height={510}
+    src={heroImage}
+    alt={title}
+  />
+  <h1 class="font-heading text-4xl my-4" transition:name={`poster-${title}`}>
+    {title}
+  </h1>
+  <div class="flex items-center justify-between mb-4">
+    <span
+      class="font-medium text-muted-foreground"
+    >
+      {formatDate(pubDate)}
+      {
+        updatedDate && (
+          <div class="last-updated-on">
+            Last updated on {formatDate(updatedDate)} />
+          </div>
+        )
+      }
+    </span>
+    <a href={`/blog/category/${category}`}>
+      <Badge
+        className="capitalize"
+      >
+        {category}
+      </Badge>
+    </a>
+  </div>
+  <p>{description}</p>
+  <hr class="my-6" />
+  <slot />
+</article>
+  
+</MainLayout>

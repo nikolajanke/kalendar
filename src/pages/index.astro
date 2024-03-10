@@ -1,0 +1,24 @@
+---
+import Hero from "../layouts/hero.astro";
+import { buttonVariants } from "../components/ui/button";
+import { siteConfig } from "../consts";
+import { cn } from "../lib/utils";
+import { Icon } from 'astro-icon/components';
+import { ThemeToggle } from "@/components/theme-toggle";
+
+---
+
+
+<Hero title="Kalendar" description="">
+		<div class="flex flex-col items-center space-y-6 h-fit mt-10">
+			<h1 class="text-xl"> Kalendar </h1>
+			  <div class="flex flex-row justify-center space-x-2">
+				<a href={siteConfig.links.linkedin} class={cn(buttonVariants({ variant: "ghost", size: "icon" }))}><Icon name="linkedin" class="text-2xl"/></a>
+				<a href={siteConfig.email} class={cn(buttonVariants({ variant: "ghost", size: "icon" }))}><Icon name="mail" class="text-2xl"/></a>
+			  </div>
+			  <div class="pt-20"><ThemeToggle client:idle/></div>
+		</div>
+
+	
+</Hero>
+		

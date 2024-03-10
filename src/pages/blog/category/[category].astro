@@ -1,0 +1,85 @@
+---
+import BlogHeader from "../../../components/blog-header.astro";
+import MainLayout from "../../../layouts/main.astro";
+import { getPostsByCategory } from "../../../lib/fetchers";
+import { capitalizer } from "../../../lib/utils";
+import { getCollection } from "astro:content";
+import { Badge } from "../../../components/ui/badge";
+import { formatDate } from "../../../lib/utils";
+import { Image } from "astro:assets";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  return posts.map((post) => ({
+    params: { category: post.data.category },
+  }));
+}
+
+const { category } = Astro.params;
+
+if (!category) {
+  return new Response(null, {
+    status: 404,
+    statusText: "Not found",
+  });
+}
+
+const posts = await getPostsByCategory(category);
+---
+
+<MainLayout title={`${capitalizer(category)} | Blog`} description={`All posts for ${category} category`}>
+  <section class="container py-10">
+    <BlogHeader title={`${category}`} />
+
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-9 md:gap-y-16 lg:gap-x-8"
+    >
+      {posts.map((post) => (
+        <article class="group space-y-4">
+          <a href={`/blog/${post.slug}/`} class="flex h-fit group-hover:-translate-y-2 group-hover:shadow-xl transition duration-300">
+            <Image
+              class="w-full h-full object-cover rounded-xl overflow-hidden duration-1000 ease-linear filter transition grayscale hover:grayscale-0"
+              width={400}
+              height={200}
+            src={post.data.heroImage}
+            alt="descriptive text"
+            transition:name={"img-" + post.slug}
+            />
+            </a>
+
+  <div class="flex items-center justify-between">
+    <a href={`/blog/category/${post.data.category}`}>
+      <Badge
+        className="capitalize"
+        transition:name={"category-" + post.slug}
+      >
+        {post.data.category}
+      </Badge>
+    </a>
+    <span
+      class="font-medium text-muted-foreground"
+      transition:name={"date-" + post.slug}
+    >
+      {formatDate(post.data.pubDate)}
+    </span>
+  </div>
+
+  <div>
+    <a href={`/blog/${post.slug}/`} class="group-hover:underline">
+      <h2
+        class="font-heading text-xl md:text-2xl leading-snug line-clamp-3"
+        transition:name={"title-" + post.slug}
+      >
+        {post.data.title}
+      </h2>
+    </a>
+    <span class="text-sm font-normal"> {post.data.description} </span>
+  </div>
+</article>
+
+      )
+      
+      )}
+    </div>
+  </section>
+</MainLayout>

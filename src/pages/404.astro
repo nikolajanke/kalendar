@@ -1,0 +1,30 @@
+---
+import Hero from "../layouts/hero.astro";
+import { buttonVariants } from "../components/ui/button";
+import { Image } from "astro:assets";
+import { siteConfig } from "../consts";
+import { cn } from "../lib/utils";
+import { Icon } from 'astro-icon/components';
+import { ThemeToggle } from "../components/theme-toggle";
+
+---
+
+
+<Hero title="404" description="Not Found">
+		<div class="flex flex-col items-center space-y-6 h-fit mt-10">
+			<h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+				404
+			  </h1>
+			  <h3 class="scroll-m-20 text-2xl font-semibold tracking-tight">
+				Not Found
+			  </h3>
+			<p class="text-sm font-medium leading-none">try</p>
+			  <div class="flex flex-row justify-center space-x-2">
+				<a href="/" class={cn(buttonVariants({ variant: "ghost"}))}>HOME</a>
+			  </div>
+			  <div class="pt-20"><ThemeToggle client:idle/></div>
+		</div>
+
+	
+</Hero>
+		

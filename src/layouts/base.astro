@@ -1,0 +1,25 @@
+---
+import Head from "../components/head.astro";
+import TailwindIndicator from "../components/tailwind-indicator.astro";
+import { cn } from "../lib/utils";
+import { siteConfig } from "../consts";
+
+type Props = {
+  title: string;
+  description?: string;
+  bodyClass?: string;
+};
+
+const { title, description, bodyClass } = Astro.props;
+---
+
+<!doctype html>
+<html lang={siteConfig.lang} >
+  <head>
+    <Head title={title} description={description} />
+  </head>
+  <body class={cn("min-h-screen select-none", bodyClass)}>
+    <slot />
+    <TailwindIndicator />
+  </body>
+</html>
